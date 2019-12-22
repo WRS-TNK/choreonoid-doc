@@ -113,7 +113,9 @@ SimpleControllerクラス
  {
  public:
      virtual bool initialize(SimpleControllerIO* io) = 0;
+     virtual bool start();
      virtual bool control() = 0;
+     virtual void stop();
  };
 
 .. ※定義の詳細についてはそのソースコードである"src/SimpleControllerPlugin/library/SimpleController.h" にて確認してください。
@@ -124,9 +126,18 @@ SimpleControllerクラス
 
  コントローラの初期化処理を行います。引数 io を通して制御に関わるオブジェクトや情報を取得できます。
 
+* **virtual bool start()**
+ シミュレーション開始時に呼びだされます。
+
 * **virtual bool control()**
 
- コントローラの入力・制御・出力処理を行います。制御中この関数は制御ループとして繰り返し実行されることになります。
+ コントローラの入力・制御・出力処理を行います。シミュレーション中、この関数は制御ループとして繰り返し実行されます。
+
+* **virtual bool stop()**
+ 
+ シミュレーション停止時に呼び出されます。
+
+シンプルコントローラ形式のコントローラでは、initialize関数とcontrol関数は必ず定義する必要があります。
 
 SimpleControllerを継承したクラスを定義したら、そのファクトリ関数を定義しておく必要があります。これは以下のようにマクロを用いて記述すればOKです。 ::
 
